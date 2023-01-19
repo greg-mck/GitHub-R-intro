@@ -87,49 +87,10 @@ packageLoad(packages)
 
 Since this is code you will be re-using throughout your workflows, we will save it as its own script and run it at the beginning of other scripts/documents using the `source()` function.
 
-## 5. R Markdown
-
-Throughout this course you will be working mostly in R Markdown documents. R Markdown is a notebook style interface integrating text and code, allowing you to create fully reproducible documents and render them to various elegantly formatted static or dynamic outputs.
-
-You can learn more about R Markdown at their website, which has really informative lessons on their [Getting Started](https://rmarkdown.rstudio.com/lesson-1.html) page and see the range of outputs you can create at their [Gallery](https://rmarkdown.rstudio.com/gallery.html) page.
-
-### 5.1 What About Quarto?
-
-Some of you may have heard of Quarto, which is essentially an extension of R Markdown but it lives as its own software to allow its use in other languages such as Python, Julia and Observable. You can install the Quarto CLI on its own and RStudio will detect it so you can create documents within the IDE, or alternatively with newer versions of RStudio a version of Quarto is built-in and you can enable Quarto through the R Markdown tab in Global Options. R Markdown isn't going anywhere, however many in the data science realm are switching to Quarto. Quarto documents are very similar to R Markdown, in fact Quarto can even render R Markdown documents, so after learning R Markdown in this course you should have some of the fundamental skills to easily switch to Quarto if you want to. You can read more about Quarto [here](https://quarto.org/).
-
-### 5.2 Getting started with R Markdown
-
-Let's create a new document by going to File -\> New File -\> R Markdown. You will be prompted to add information like title and author, fill those in (let's call it "Intro to R and R Markdown") and keep the output as HTML for now. Click OK to create the document.
-
-This creates an outline of an R Markdown document, and you see the title, author and date you gave the prompt at the top of the document which is called the YAML header.
-
-Notice that the file contains three types of content:
-
--   An (optional) YAML header surrounded by `---`s
-
--   R code chunks surrounded by ```` ``` ````s
-
--   text mixed with simple text formatting
-
-Since this is a notebook style document, you run the code chunks by clicking the green play button, and then the output is returned directly below the chunk.
-
-When you want to create a report from your notebook, you render it by hitting the 'knit' button, and it will render to the format you have specified in the YAML header. In order to do so though, you need to have the `rmarkdown` package installed.
-
-You can delete the rest of the code/text below the YAML header, and insert a new code chunk at the top. You can insert code chunks by clicking the green C with the '+' sign at the top of the source editor, or with the keyboard short cut (Ctrl+Alt+I for Windows, Option+Command+I for Macs). For the rest of the lesson (and course) you will be writing and executing code through code chunks, and you can type any notes in the main body of the document.
-
-The first chunk is almost always your set up code, where you read in libraries and any necessary data sets. Here we will execute our set up script to install and load all the libraries we need:
 
 ```{r eval=TRUE}
 source("setup.R")
 ```
-
-## 6. Explore
-
-Normally when working with a new data set, the first thing we do is explore the data to better understand what we're working with. To do so, you also need to understand the fundamental data types and structures you can work with in R.
-
-### 6.1 The `penguins` data
-
-For this intro lesson, we are going to use the Palmer Penguins data set (which is loaded with the `palmerpenguins` package you installed in your set up script). This data was collected and made available by [Dr. Kristen Gorman](https://www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php) and the [Palmer Station, Antarctica LTER](https://pallter.marine.rutgers.edu/), a member of the [Long Term Ecological Research Network](https://lternet.edu/).
 
 Load the `penguins` data set.
 
@@ -243,22 +204,43 @@ penguins$species
 1.  Why don't the following lines of code work? Tweak each one so the code runs
 
     ```{r}
-    myList["Fruit"]
+    myList[["Fruit"]]
     ```
 
     ```{r}
-    penguins$flipper_lenght_mm
+    penguins$flipper_length_mm
     ```
 
     ```{r}
-    penguins[island=='Dream',]
+    penguins[penguins$island=='Dream',]
     ```
 
 2.  How many species are in the `penguins` dataset? What islands were the data collected for? (Note: the `unique()` function might help)
 
+##There are three species of penguins
+
+```{r}
+unique(penguins$species)
+
+```
+
 3.  Use indexing to create a new data frame that has only 3 columns: species, island and flipper length columns, and subset all rows for just the 'Dream' island.
 
+
+```{r}
+new_df <- penguins[penguins$island=='Dream',c("species","island", "flipper_length_mm")]
+new_df
+```
+
 4.  Use indexing and the `mean()` function to find the average flipper length for the *Adelie* species on Dream island. (Note: explore the `mean()` function and how to deal with NA values).
+
+```{r}
+
+
+DreamP <- penguins[penguins$island=='Dream',c("species", "flipper_length_mm")]
+DreamPAde <- DreamP[DreamP$species=='Adelie',]
+mean(DreamPAde$flipper_length_mm)
+```
 
 ### 6.4 The `dplyr` package
 
