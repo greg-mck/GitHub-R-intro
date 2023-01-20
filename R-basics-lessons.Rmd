@@ -336,15 +336,41 @@ penguins %>%
 
 1.  Reorder the variables in `penguins` so that `year` is the first column followed by the rest (Hint: look into the use of `everything()`).
 
+```{r}
+
+rordered_P <- penguins%>%
+  select(year,everything())
+rordered_P
+```
+
 2.  Create a new column called 'size_group' where individuals with body mass greater than the overall average are called 'large' and those smaller are called 'small'.
 
+```{r}
+BM_mean <- mean(penguins$body_mass_g, na.rm = TRUE )
+size_grp_penguins <- mutate(penguins, size_group = if_else(body_mass_g - BM_mean >= 0, "large", "small"))
+size_grp_penguins
+```
+
 3.  Find out which year for each species were individuals on average the largest according to body mass.
+
+```{r}
+
+penguins %>% 
+  #group_by(species) %>% 
+  group_by(year) %>% 
+  summarise(body_mass_avg = mean(body_mass_g, na.rm = TRUE))
+
+```
+
+
 
 4.  You want to filter data for years that are *not* in a vector of given years, but this code doesn't work. Tweak it so that it does. (Yes, you could just filter year to equal 2007 in this case but there is a trouble-shooting lessons here).
 
     ```{r}
-    penguins %>% 
-      filter(year !%in% c(2008, 2009))
+    #penguins %>% 
+    filterPenguins <- filter(penguins, year != c(2008, 2009))
+    filterPenguins
+    
     ```
 
 ## 7. Visualize
@@ -408,6 +434,8 @@ ggplot(penguins, aes(x = island, fill = species)) +
 We can use `geom_point()` to view the relationship between two variables by specifying the x and y axes. Say we want to visualize the relationship between penguin body mass and flipper length and color the point by species:
 
 ```{r, eval=TRUE}
+penguins
+
 ggplot(penguins) +
   geom_point(mapping = aes(x = body_mass_g, y = flipper_length_mm, color = species))
 ```
@@ -416,7 +444,28 @@ ggplot(penguins) +
 
 1.  Make a barplot showing the average flipper length for each species.
 
+```{r}
+
+meanFlip <- penguins %>% 
+  group_by(species) %>% 
+  summarise(average_flipper_length_mm = mean(flipper_length_mm, na.rm = TRUE))
+meanFlip
+
+ggplot(data = meanFlip) + 
+  geom_bar(mapping = aes(x = species, y = average_flipper_length_mm))
+
+
+```
+
 2.  Make a scatter plot of bill length compared to bill depth but only for observations on the Dream island.
+
+```{r}
+#filter(penguins, species == "Adelie")
+
+ggplot(filter(penguins, island == "Dream")) +
+  geom_point(mapping = aes(x = bill_length_mm, y = bill_depth_mm, color = island))
+
+```
 
 ## 8. Read and Write Data
 
