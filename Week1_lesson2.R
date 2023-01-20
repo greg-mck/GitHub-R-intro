@@ -95,3 +95,13 @@ elevation_crop <- crop(elevation, ext(roads))
 tm_shape(elevation_crop) +
   tm_raster(style = "cont")
 
+###Lets make a final map with all the spatial data we created
+
+
+tm_shape(elevation, bbox = st_bbox(poudre_hwy))+
+  tm_raster(style = "cont", title = "Elevation (m)")+
+  tm_shape(poudre_hwy)+
+  tm_lines()+
+  tm_shape(poudre_points_prj)+
+  tm_dots(size = 0.2)
+
