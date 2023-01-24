@@ -330,18 +330,18 @@ qtm(counties, fill = "AWATER" )
 
 
 ```{r}
-poudre_points_sf[nrow(poudre_points_sf)+1,] = c(extract(elevation, poudre_points_sf))
+elevDF <- extract(x = elevation_crop, y = poudre_points_prj)
 
-
-#mutate(poudre_points_prj, extract(elevation, poudre_points_sf))
-poudre_points_sf
-#ggplot(poudre_points_sf) +
-  #geom_bar(mapping = aes(x = name, y = extract(elevation, poudre_points_sf)))
-
+mutate(poudre_points_prj, Elev = elevDF,)
+poudre_points_prj
 ```
 
 
 4.  Why are there 4 features in our Poudre Canyon Highway variable instead of 1?
+
+
+because , Kevin. 
+
 Footer
 © 2023 GitHub, Inc.
 Footer navigation
